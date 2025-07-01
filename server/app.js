@@ -5,7 +5,8 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import cors from 'cors';
-import connectDB from "./database/db.js";
+import connectDB from "./src/database/db.js";
+import userRouter from './src/routes/user.routes.js';
 
 connectDB();
 
@@ -18,6 +19,8 @@ app.use(cors({
     origin:'',
     credentials:true
 }))
+
+app.use('/api/v1/user/',userRouter)
 
 app.get("/",(req,res)=>{
     res.send("Welcome to the Uber Server");
