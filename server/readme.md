@@ -17,7 +17,8 @@ This project provides a secure and scalable backend for an Uber clone ride booki
 
 - **User Login**  
   → JWT token generation  
-  → HTTP-only cookie setup for session security
+  → HTTP-only cookie setup for session security  
+  → Checks if the JWT token is blacklisted before allowing login
 
 - **User Logout**  
   → JWT token blacklisting stored in MongoDB  
@@ -27,8 +28,6 @@ This project provides a secure and scalable backend for an Uber clone ride booki
 
 🛠️ This forms the foundation of the project.  
 🚀 Upcoming modules will include ride booking APIs, driver and rider dashboards, real-time tracking with Socket.IO, and online payment integration.
-
----
 
 ---
 
@@ -135,6 +134,7 @@ sequenceDiagram
     Client->>Server: POST /api/v1/user/login (email, password)
     Server->>Server: Validate input
     Server->>Server: Check user & password
+    Server->>Server: Check if JWT token is blacklisted
     Server->>Client: Set JWT cookie, return user info
 ```
 
@@ -245,6 +245,4 @@ Cookie: token=<your_jwt_token>
 ## 🤝 Contribution
 
 Contributions are welcome!  
-Please open issues or submit pull requests for improvements and new features.
-
----
+Please open issues or submit pull requests for
