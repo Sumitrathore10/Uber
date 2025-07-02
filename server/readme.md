@@ -89,7 +89,7 @@ server/
 
 3. **Create a `.env` file in the root with the following variables:**
    ```env
-   MONGO_URL="your_mongodb_connection_string"
+   MONGO_URL="mongodb_connection_string"
    PORT=3000
    JWT_SECRETE_KEY="your_jwt_secret_key"
    ```
