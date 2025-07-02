@@ -125,3 +125,15 @@ export const logoutUSer = async (req,res) => {
     })
   }
 }
+
+export const userProfile = async (req,res) =>{
+  try {
+    res.status(201).json(req.user)
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+    console.log(error)
+  }
+}
