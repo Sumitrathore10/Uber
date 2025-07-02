@@ -1,7 +1,12 @@
 # Rydito – Ride Booking Platform
 
+<<<<<<< HEAD
 A backend system for a **Rydito-like ride booking platform**, currently in the **development phase**.  
 This project aims to replicate the core backend functionalities of Rydito using the **MERN stack**.
+=======
+A backend system for an **Rydito is online ride booking platform**, currently in the **development phase**.  
+This project aims to replicate the core backend functionalities of Uber using the **MERN stack**.
+>>>>>>> b408fd6d6eed882590cced15ebbba86d2cda4ff3
 
 ---
 
@@ -89,7 +94,7 @@ server/
 
 3. **Create a `.env` file in the root with the following variables:**
    ```env
-   MONGO_URL="your_mongodb_connection_string"
+   MONGO_URL="mongodb_connection_string"
    PORT=3000
    JWT_SECRETE_KEY="your_jwt_secret_key"
    ```
@@ -284,4 +289,8 @@ Cookie: token=<your_jwt_token>
 ## 🤝 Contribution
 
 Contributions are welcome!  
+<<<<<<< HEAD
 Please open issues or
+=======
+Please open issues or submit pull requests for improvements
+>>>>>>> b408fd6d6eed882590cced15ebbba86d2cda4ff3
