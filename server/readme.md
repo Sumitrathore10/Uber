@@ -1,12 +1,7 @@
 # Rydito – Ride Booking Platform
 
-<<<<<<< HEAD
-A backend system for a **Rydito-like ride booking platform**, currently in the **development phase**.  
-This project aims to replicate the core backend functionalities of Rydito using the **MERN stack**.
-=======
 A backend system for an **Rydito is online ride booking platform**, currently in the **development phase**.  
 This project aims to replicate the core backend functionalities of Uber using the **MERN stack**.
->>>>>>> b408fd6d6eed882590cced15ebbba86d2cda4ff3
 
 ---
 
