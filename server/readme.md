@@ -1,13 +1,13 @@
-# Uber Clone – Ride Booking Platform
+# Rydito – Ride Booking Platform
 
-A backend system for an **Uber-like ride booking platform**, currently in the **development phase**.  
-This project aims to replicate the core backend functionalities of Uber using the **MERN stack**.
+A backend system for a **Rydito-like ride booking platform**, currently in the **development phase**.  
+This project aims to replicate the core backend functionalities of Rydito using the **MERN stack**.
 
 ---
 
 ## 🚀 Project Description
 
-This project provides a secure and scalable backend for an Uber clone ride booking platform. It currently supports user authentication features including registration (with input validation and password hashing), login (JWT-based authentication with HTTP-only cookies), logout (with JWT token blacklisting for security), and user profile retrieval.
+This project provides a secure and scalable backend for a Rydito clone ride booking platform. It currently supports user authentication features including registration (with input validation and password hashing), login (JWT-based authentication with HTTP-only cookies), logout (with JWT token blacklisting for security), and user profile retrieval.
 
 ### ✅ Currently Implemented Features
 
@@ -284,4 +284,4 @@ Cookie: token=<your_jwt_token>
 ## 🤝 Contribution
 
 Contributions are welcome!  
-Please open issues or submit pull requests for improvements
+Please open issues or
