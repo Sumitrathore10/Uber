@@ -7,7 +7,7 @@ This project aims to replicate the core backend functionalities of Uber using th
 
 ## 🚀 Project Description
 
-This project provides a secure and scalable backend for an Uber clone ride booking platform. It currently supports user authentication features including registration (with input validation and password hashing), login (JWT-based authentication with HTTP-only cookies), and logout (with JWT token blacklisting for security).
+This project provides a secure and scalable backend for an Uber clone ride booking platform. It currently supports user authentication features including registration (with input validation and password hashing), login (JWT-based authentication with HTTP-only cookies), logout (with JWT token blacklisting for security), and user profile retrieval.
 
 ### ✅ Currently Implemented Features
 
@@ -23,6 +23,10 @@ This project provides a secure and scalable backend for an Uber clone ride booki
 - **User Logout**  
   → JWT token blacklisting stored in MongoDB  
   → Secure logout with cookie clearing
+
+- **User Profile**  
+  → Protected route to fetch authenticated user's profile  
+  → Requires valid and non-blacklisted JWT token
 
 ---
 
@@ -107,6 +111,7 @@ server/
 | POST   | `/api/v1/user/register`  | Register a new user (with validation)        |
 | POST   | `/api/v1/user/login`     | Login user and receive JWT in cookie         |
 | GET    | `/api/v1/user/logout`    | Logout user and blacklist JWT token          |
+| GET    | `/api/v1/user/profile`   | Get authenticated user's profile             |
 
 ---
 
@@ -147,6 +152,18 @@ sequenceDiagram
     Client->>Server: GET /api/v1/user/logout (with JWT cookie)
     Server->>Server: Blacklist JWT token
     Server->>Client: Clear cookie, return success
+```
+
+### 4. User Profile API
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    Client->>Server: GET /api/v1/user/profile (with JWT cookie)
+    Server->>Server: Verify JWT & check blacklist
+    Server->>Server: Fetch user from DB
+    Server->>Client: Return user profile data
 ```
 
 ---
@@ -229,6 +246,28 @@ Cookie: token=<your_jwt_token>
 
 ---
 
+### Get User Profile
+
+**Request:**
+```http
+GET /api/v1/user/profile
+Cookie: token=<your_jwt_token>
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "user": {
+    "_id": "60f1c2d5e1b1c2d5e1b1c2d5",
+    "fullname": { "firstname": "John", "lastname": "Doe" },
+    "email": "john.doe@example.com"
+  }
+}
+```
+
+---
+
 ## 🔮 Future Features
 
 - 🚗 Book a Ride (user can book a ride)
@@ -245,4 +284,4 @@ Cookie: token=<your_jwt_token>
 ## 🤝 Contribution
 
 Contributions are welcome!  
-Please open issues or submit pull requests for
+Please open issues or submit pull requests for improvements
