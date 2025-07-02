@@ -1,6 +1,6 @@
-# Uber Clone – Ride Booking Platform
+# Rydito – Ride Booking Platform
 
-A backend system for an **Uber-like ride booking platform**, currently in the **development phase**.  
+A backend system for an **Rydito is online ride booking platform**, currently in the **development phase**.  
 This project aims to replicate the core backend functionalities of Uber using the **MERN stack**.
 
 ---
