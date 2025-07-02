@@ -1,12 +1,34 @@
 # Uber Clone – Ride Booking Platform
 
-A backend system for an Uber-like ride booking platform, featuring secure user registration, login, and logout with JWT token management and token blacklisting using MongoDB.
+A backend system for an **Uber-like ride booking platform**, currently in the **development phase**.  
+This project aims to replicate the core backend functionalities of Uber using the **MERN stack**.
 
 ---
 
 ## 🚀 Project Description
 
 This project provides a secure and scalable backend for an Uber clone ride booking platform. It currently supports user authentication features including registration (with input validation and password hashing), login (JWT-based authentication with HTTP-only cookies), and logout (with JWT token blacklisting for security).
+
+### ✅ Currently Implemented Features
+
+- **User Registration**  
+  → Input validation using `express-validator`  
+  → Password hashing using `bcrypt`
+
+- **User Login**  
+  → JWT token generation  
+  → HTTP-only cookie setup for session security
+
+- **User Logout**  
+  → JWT token blacklisting stored in MongoDB  
+  → Secure logout with cookie clearing
+
+---
+
+🛠️ This forms the foundation of the project.  
+🚀 Upcoming modules will include ride booking APIs, driver and rider dashboards, real-time tracking with Socket.IO, and online payment integration.
+
+---
 
 ---
 
