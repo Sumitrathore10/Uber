@@ -39,12 +39,12 @@ userSchema.methods.generateAuthToken = async function() {
   return token;
 };
 
-userSchema.statics.hashedPassword = async (password) =>{
+userSchema.statics.hashedPassword = async function (password){
   const hashedPassword = await bcrypt.hash(password,10)
   return hashedPassword;
 }
 
-userSchema.methods.comparePassword = async () => {
+userSchema.methods.comparePassword = async function (password){
   const passwordVerify = await bcrypt.compare(password,this.password);
   return passwordVerify;
 }

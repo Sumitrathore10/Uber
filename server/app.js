@@ -22,6 +22,8 @@ app.use(cors({
 
 app.use('/api/v1/user/',userRouter)
 
+
+
 app.get("/",(req,res)=>{
     res.send("Welcome to the Uber Server");
 })
