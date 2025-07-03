@@ -3,17 +3,17 @@ import { User } from "../models/user.models.js";
 import { validationResult } from "express-validator";
 
 export const registerUser = async (req, res) => {
-  try {
-    const errors = validationResult(req);
+  const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.staus(400).json({
+      return res.status(400).json({
         errors: errors.array(),
       });
     }
+  try {
     const { fullname, email, password } = req.body;
-    if (!fullname || !email || !password) {
+    if (!fullname.firstname || !fullname.lastname || !email || !password) {
       return res.status(400).json({
-        success: flase,
+        success: false,
         message: "All fields are required !!!",
       });
     }

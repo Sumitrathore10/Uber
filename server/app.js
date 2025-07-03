@@ -7,6 +7,7 @@ import express from 'express';
 import cors from 'cors';
 import connectDB from "./src/database/db.js";
 import userRouter from './src/routes/user.routes.js';
+import captainRouter from "./src/routes/captain.routes.js"
 
 connectDB();
 
@@ -21,6 +22,7 @@ app.use(cors({
 }))
 
 app.use('/api/v1/user/',userRouter)
+app.use('/api/v1/captain/',captainRouter)
 
 
 

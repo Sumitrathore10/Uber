@@ -5,7 +5,7 @@ import bcrypt from "bcrypt"
 
 const captainSchema = new mongoose.Schema(
   {
-    fullname: {
+      fullname: {
         firstname: {
           type: String,
           required: true,
@@ -84,5 +84,6 @@ captainSchema.statics.hashedPassword = async function(password){
 
 captainSchema.methods.comparePassword = async function (password) {
     const passwordVerify = await bcrypt.compare(password , this.password)
+    return passwordVerify;
 }
 export const Captain = mongoose.model("Captain", captainSchema);

@@ -1,13 +1,13 @@
 # Rydito – Ride Booking Platform
 
-A backend system for an **Rydito is online ride booking platform**, currently in the **development phase**.  
+A backend system for an **Rydito online ride booking platform**, currently in the **development phase**.  
 This project aims to replicate the core backend functionalities of Uber using the **MERN stack**.
 
 ---
 
 ## 🚀 Project Description
 
-This project provides a secure and scalable backend for a Rydito clone ride booking platform. It currently supports user authentication features including registration (with input validation and password hashing), login (JWT-based authentication with HTTP-only cookies), logout (with JWT token blacklisting for security), and user profile retrieval.
+This project provides a secure and scalable backend for a Rydito clone ride booking platform. It currently supports user and captain (driver) authentication features including registration (with input validation and password hashing), login (JWT-based authentication with HTTP-only cookies), logout (with JWT token blacklisting for security), and profile retrieval.
 
 ### ✅ Currently Implemented Features
 
@@ -27,6 +27,14 @@ This project provides a secure and scalable backend for a Rydito clone ride book
 - **User Profile**  
   → Protected route to fetch authenticated user's profile  
   → Requires valid and non-blacklisted JWT token
+
+- **Captain Registration**  
+  → Input validation using `express-validator`  
+  → Password hashing using `bcrypt`  
+  → Vehicle details required
+
+- **Captain Login/Logout/Profile**  
+  → Same security and flow as user
 
 ---
 
@@ -60,16 +68,19 @@ server/
 ├── server.js
 └── src/
     ├── controllers/
-    │   └── user.controller.js
+    │   ├── user.controller.js
+    │   └── captain.controller.js
     ├── database/
     │   └── db.js
     ├── middlewares/
     │   └── auth.middleware.js
     ├── models/
     │   ├── blacklist.models.js
-    │   └── user.models.js
+    │   ├── user.models.js
+    │   └── captain.model.js
     └── routes/
-        └── user.routes.js
+        ├── user.routes.js
+        └── captain.routes.js
 ```
 
 ---
@@ -106,6 +117,8 @@ server/
 
 ## 📚 API Routes
 
+### User APIs
+
 | Method | Route                    | Description                                 |
 |--------|--------------------------|---------------------------------------------|
 | POST   | `/api/v1/user/register`  | Register a new user (with validation)        |
@@ -113,11 +126,22 @@ server/
 | GET    | `/api/v1/user/logout`    | Logout user and blacklist JWT token          |
 | GET    | `/api/v1/user/profile`   | Get authenticated user's profile             |
 
+### Captain APIs
+
+| Method | Route                          | Description                                   |
+|--------|--------------------------------|-----------------------------------------------|
+| POST   | `/api/v1/captain/register`     | Register a new captain (with validation)      |
+| POST   | `/api/v1/captain/login`        | Login captain and receive JWT in cookie       |
+| GET    | `/api/v1/captain/logout`       | Logout captain and blacklist JWT token        |
+| GET    | `/api/v1/captain/profile`      | Get authenticated captain's profile           |
+
 ---
 
 ## 🔄 Visual Code Flow
 
-### 1. Register API
+### User APIs
+
+#### 1. Register User
 
 ```mermaid
 sequenceDiagram
@@ -130,7 +154,7 @@ sequenceDiagram
     Server->>Client: Set JWT cookie, return user info
 ```
 
-### 2. Login API
+#### 2. Login User
 
 ```mermaid
 sequenceDiagram
@@ -143,7 +167,7 @@ sequenceDiagram
     Server->>Client: Set JWT cookie, return user info
 ```
 
-### 3. Logout API
+#### 3. Logout User
 
 ```mermaid
 sequenceDiagram
@@ -154,7 +178,7 @@ sequenceDiagram
     Server->>Client: Clear cookie, return success
 ```
 
-### 4. User Profile API
+#### 4. User Profile
 
 ```mermaid
 sequenceDiagram
@@ -164,6 +188,59 @@ sequenceDiagram
     Server->>Server: Verify JWT & check blacklist
     Server->>Server: Fetch user from DB
     Server->>Client: Return user profile data
+```
+
+---
+
+### Captain APIs
+
+#### 1. Register Captain
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    Client->>Server: POST /api/v1/captain/register (fullname, email, password, vehical)
+    Server->>Server: Validate input
+    Server->>Server: Hash password
+    Server->>Server: Save captain & vehicle to DB
+    Server->>Client: Set JWT cookie, return captain info
+```
+
+#### 2. Login Captain
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    Client->>Server: POST /api/v1/captain/login (email, password)
+    Server->>Server: Validate input
+    Server->>Server: Check captain & password
+    Server->>Server: Check if JWT token is blacklisted
+    Server->>Client: Set JWT cookie, return captain info
+```
+
+#### 3. Logout Captain
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    Client->>Server: GET /api/v1/captain/logout (with JWT cookie)
+    Server->>Server: Blacklist JWT token
+    Server->>Client: Clear cookie, return success
+```
+
+#### 4. Captain Profile
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    Client->>Server: GET /api/v1/captain/profile (with JWT cookie)
+    Server->>Server: Verify JWT & check blacklist
+    Server->>Server: Fetch captain from DB
+    Server->>Client: Return captain profile data
 ```
 
 ---
@@ -268,6 +345,117 @@ Cookie: token=<your_jwt_token>
 
 ---
 
+### Register Captain
+
+**Request:**
+```http
+POST /api/v1/captain/register
+Content-Type: application/json
+
+{
+  "fullname": { "firstname": "Ali", "lastname": "Khan" },
+  "email": "ali.khan@example.com",
+  "password": "StrongPassword123",
+  "vehical": {
+    "plate": "ABC-1234",
+    "capacity": 4,
+    "color": "White",
+    "vehicalType": "Car"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "captain": {
+    "_id": "60f1c2d5e1b1c2d5e1b1c2d5",
+    "fullname": { "firstname": "Ali", "lastname": "Khan" },
+    "email": "ali.khan@example.com",
+    "vehical": {
+      "plate": "ABC-1234",
+      "capacity": 4,
+      "color": "White",
+      "vehicalType": "Car"
+    }
+  },
+  "message": "Captain registered successfully"
+}
+```
+
+---
+
+### Login Captain
+
+**Request:**
+```http
+POST /api/v1/captain/login
+Content-Type: application/json
+
+{
+  "email": "ali.khan@example.com",
+  "password": "StrongPassword123"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Captain login successfully !!!"
+}
+```
+> **Note:** A JWT token will be set in an HTTP-only cookie.
+
+---
+
+### Logout Captain
+
+**Request:**
+```http
+GET /api/v1/captain/logout
+Cookie: token=<your_jwt_token>
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Logout successfully !!!"
+}
+```
+
+---
+
+### Get Captain Profile
+
+**Request:**
+```http
+GET /api/v1/captain/profile
+Cookie: token=<your_jwt_token>
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "captain": {
+    "_id": "60f1c2d5e1b1c2d5e1b1c2d5",
+    "fullname": { "firstname": "Ali", "lastname": "Khan" },
+    "email": "ali.khan@example.com",
+    "vehical": {
+      "plate": "ABC-1234",
+      "capacity": 4,
+      "color": "White",
+      "vehicalType": "Car"
+    }
+  }
+}
+```
+
+---
+
 ## 🔮 Future Features
 
 - 🚗 Book a Ride (user can book a ride)
@@ -284,8 +472,4 @@ Cookie: token=<your_jwt_token>
 ## 🤝 Contribution
 
 Contributions are welcome!  
-<<<<<<< HEAD
-Please open issues or
-=======
-Please open issues or submit pull requests for improvements
->>>>>>> b408fd6d6eed882590cced15ebbba86d2cda4ff3
+Please open issues
