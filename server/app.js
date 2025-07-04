@@ -27,7 +27,7 @@ app.use('/api/v1/captain/',captainRouter)
 
 
 app.get("/",(req,res)=>{
-    res.send("Welcome to the Uber Server");
+    res.send("Welcome to the Rydito Server");
 })
 
 export default app;
