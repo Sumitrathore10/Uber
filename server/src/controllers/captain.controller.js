@@ -131,7 +131,7 @@ export const logoutCaptain = async (req, res) => {
     const token = req.cookies.token;
     await Blacklist.create({ token });
     return res
-      .status(201)
+      .status(200)
       .clearCookie("token", null, {
         httpOnly: true,
         sameSite: "strict",
@@ -151,7 +151,7 @@ export const logoutCaptain = async (req, res) => {
 
 export const captainProfile = async (req, res) => {
   try {
-    return res.status(201).json(req.captain);
+    return res.status(200).json(req.captain);
   } catch (error) {
     return res.status(500).json({
       success: false,

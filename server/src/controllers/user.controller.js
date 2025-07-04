@@ -112,7 +112,7 @@ export const logoutUSer = async (req,res) => {
   try {
     const token = req.cookies.token
    await Blacklist.create({token})
-  return res.clearCookie('token').json({
+  return res.status(200).clearCookie('token').json({
     
       success:true,
       message:"Logout successfully !!"
@@ -128,7 +128,7 @@ export const logoutUSer = async (req,res) => {
 
 export const userProfile = async (req,res) =>{
   try {
-    res.status(201).json(req.user)
+    res.status(200).json(req.user)
   } catch (error) {
     return res.status(500).json({
       success: false,
