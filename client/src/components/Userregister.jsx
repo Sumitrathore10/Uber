@@ -1,26 +1,24 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import {  Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { userContext } from '../context/UserContext.jsx';
 
-const CaptainRegister = () => {
 
-  const[userRegister,setRegister]=useState({
-    fullname:{
-      firstname: "",
-      lastname: ""
-    },
-    email:"",
-    password:""
-  })
-
-  const handleSubmit = (e) => {
+const UserRegister = () => {
+const navigate = useNavigate();
+const { user, setUser } = useContext(userContext);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Registration data submitted:", userRegister);
-    setRegister({
-      fullname: { firstname: "", lastname: "" },
-      email: "",
-      password: ""
-    });
-  }
+    try {
+    const res = await axios.post(`${import.meta.env.VITE_USER_URL}/register`,user,{ headers:{"Content-Type":"application/json"},withCredentials:true});
+    if(res.status === 201 || res.data.success){
+      setUser(user)
+      navigate('/user/login');
+      console.log("User registered successfully:", res.data.user);
+    }
+    } catch (error) {
+      console.error("Error during registration:", error.response ? error.response.data.message : error.message);
+    }}
   return (
     <div className="min-h-screen flex flex-col select-none bg-white">
 
@@ -50,8 +48,8 @@ const CaptainRegister = () => {
                   <label className="block text-sm text-gray-800 mb-1">First Name</label>
                   <input
                     type="text"
-                    value={userRegister.fullname.firstname}
-                    onChange={(e)=>{setRegister({...userRegister,fullname:{...userRegister.fullname,firstname:e.target.value}})}}
+                    value={user.fullname.firstname}
+                    onChange={(e)=>{setUser({...user,fullname:{...user.fullname,firstname:e.target.value}})}}
                     required
                     placeholder="John"
                     className="w-full h-12 bg-[#eeeeee] rounded-lg px-4 text-sm outline-none"
@@ -61,8 +59,8 @@ const CaptainRegister = () => {
                   <label className="block text-sm text-gray-800 mb-1">Last Name</label>
                   <input
                     type="text"
-                    value={userRegister.fullname.lastname}
-                    onChange={(e)=>{setRegister({...userRegister,fullname:{...userRegister.fullname,lastname:e.target.value}})}}
+                    value={user.fullname.lastname}
+                    onChange={(e)=>{setUser({...user,fullname:{...user.fullname,lastname:e.target.value}})}}
                     required
                     placeholder="Doe"
                     className="w-full h-12 bg-[#eeeeee] rounded-lg px-4 text-sm outline-none"
@@ -74,8 +72,8 @@ const CaptainRegister = () => {
               <div>
                 <label className="block text-sm text-gray-800 mb-1">Email</label>
                 <input
-                value={userRegister.email}
-                onChange={(e)=>{setRegister({...userRegister,email:e.target.value})}}
+                value={user.email}
+                onChange={(e)=>{setUser({...user,email:e.target.value})}}
                   type="email"
                   required
                   placeholder="example@gmail.com"
@@ -88,8 +86,8 @@ const CaptainRegister = () => {
                 <label className="block text-sm text-gray-800 mb-1">Password</label>
                 <input
                   type="password"
-                  value={userRegister.password}
-                  onChange={(e)=>{setRegister({...userRegister,password:e.target.value})}}
+                  value={user.password}
+                  onChange={(e)=>{setUser({...user,password:e.target.value})}}
                   required
                   placeholder="password"
                   className="w-full h-12 bg-[#eeeeee] rounded-lg px-4 text-sm outline-none"
@@ -144,5 +142,4 @@ const CaptainRegister = () => {
     </div>
   );
 };
-
-export default CaptainRegister;
+export default UserRegister;
