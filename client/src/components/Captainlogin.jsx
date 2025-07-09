@@ -1,16 +1,33 @@
-import { React , useState }from 'react'
-import { Link } from 'react-router-dom'
+import { React , useContext,  }from 'react'
+import { Link , useNavigate} from 'react-router-dom'
+import axios from 'axios'
+import { captainContext } from '../context/CaptainContext'
+import toast from 'react-hot-toast'
 
 const Captainlogin = () => {
-  const [captainData,setCaptainData] = useState({
-    email : "",
-    password : ""
-  })
+  const navigate = useNavigate()
+  const {captain,setCaptain} = useContext(captainContext)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login data submitted:", captainData);
-    setCaptainData({ email: "", password: "" });
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_CAPTAIN_URL}/login`, captain,{headers:{
+        "Content-Type": "application/json"
+      },withCredentials:true})
+      if(res.status === 201 || res.data.success){
+        setCaptain(captain)
+        localStorage.setItem('token',res.data.token)
+        toast.success(`${res.data?.captain?.fullname?.firstname || "Captain"} logged in successfully`);
+        navigate('/captain/home')
+        setCaptain({
+          email: "",
+          password: "",
+        })
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(`${error.response?.data?.message}`);
+    }
   }
 
   return (
@@ -42,9 +59,9 @@ const Captainlogin = () => {
                 </label>
                 <input 
                   type="email"
-                  value={captainData.email}
+                  value={captain.email}
                   onChange={(e)=>{
-                    setCaptainData({...captainData,email:e.target.value})
+                    setCaptain({...captain,email:e.target.value})
                   }}
                   required
                   className="w-full h-12 bg-[#eeeeee] rounded-lg px-4 text-sm outline-none "
@@ -59,9 +76,9 @@ const Captainlogin = () => {
                 </label>
                 <input 
                   type="password"
-                  value={captainData.password}
+                  value={captain.password}
                   onChange={(e)=>{ 
-                    setCaptainData({...captainData,password:e.target.value})
+                    setCaptain({...captain,password:e.target.value})
                   }}
                   required
                   placeholder="password"

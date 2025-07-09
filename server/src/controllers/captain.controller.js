@@ -113,6 +113,7 @@ export const loginCaptain = async (req, res) => {
         httpOnly: true,
         sameSite: "strict",
         maxAge: 24 * 60 * 60 * 1000,
+        captain,
       })
       .json({
         success: true,

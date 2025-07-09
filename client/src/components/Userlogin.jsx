@@ -1,19 +1,40 @@
-import { useState} from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios'
+import  { useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { userContext } from '../context/UserContext.jsx'
+import toast from 'react-hot-toast'
 
 
 const Userlogin = () => {
-const [userdata, setUserData] = useState({
-  email:"",
-  password:""
-})
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const {user, setUser} = useContext(userContext)
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically handle the login logic, such as sending a request to your backend API.
-    console.log("Login data submitted:", userdata);
-    // Reset form after submission
-    setUserData({ email: "", password: "" });
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_USER_URL}/login`, user,{headers:{
+        "Content-Type": "application/json"
+      },withCredentials:true})
+      if(res.status === 201 || res.data.success){
+        setUser(user)
+        localStorage.setItem('token',res.data.token)
+        toast.success(`${res.data.user.fullname.firstname} logged in successfully`)
+        navigate('/home')
+        setUser({
+          fullname: {
+            firstname: "",
+            lastname: ""
+          },
+          email: "",
+          password: ""
+        })
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error during login");
+    }
+    
   }
 
   return (
@@ -43,9 +64,9 @@ const [userdata, setUserData] = useState({
                   What's your email
                 </label>
                 <input 
-                value={userdata.email}
+                value={user.email}
                 onChange={(e)=>{
-                  setUserData({...userdata,email:e.target.value})
+                  setUser({...user,email:e.target.value})
                 }}
                   type="email"
                   required
@@ -61,9 +82,9 @@ const [userdata, setUserData] = useState({
                 </label>
                 <input 
                   type="password"
-                  value={userdata.password}
+                  value={user.password}
                   onChange={(e)=>{
-                    setUserData({...userdata,password:e.target.value})
+                    setUser({...user,password:e.target.value})
                   }}
                   required
                   placeholder="password"

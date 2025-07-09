@@ -2,23 +2,39 @@ import { useContext } from 'react';
 import {  Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { userContext } from '../context/UserContext.jsx';
+import toast from 'react-hot-toast';
 
 
 const UserRegister = () => {
 const navigate = useNavigate();
 const { user, setUser } = useContext(userContext);
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-    const res = await axios.post(`${import.meta.env.VITE_USER_URL}/register`,user,{ headers:{"Content-Type":"application/json"},withCredentials:true});
-    if(res.status === 201 || res.data.success){
-      setUser(user)
+  e.preventDefault();
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_USER_URL}/register`, user, {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    });
+
+    if (res.status === 201 || res.data.success) {
+      setUser(user);
+      localStorage.setItem('token',res.data.token)
+      toast.success(`${res.data.user.fullname.firstname} registered successfully`);
       navigate('/user/login');
-      console.log("User registered successfully:", res.data.user);
+      setUser({
+    fullname: {
+      firstname: "",
+      lastname: ""
+    },
+    email: "",
+    password: ""
+  })
     }
-    } catch (error) {
-      console.error("Error during registration:", error.response ? error.response.data.message : error.message);
-    }}
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Error during registration");
+  }
+};
+
   return (
     <div className="min-h-screen flex flex-col select-none bg-white">
 
@@ -110,7 +126,7 @@ const { user, setUser } = useContext(userContext);
                 type="submit"
                 className="w-full h-12 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-900 transition"
               >
-                Register
+                Create Account
               </button>
 
               {/* Divider */}
